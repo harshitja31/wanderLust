@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV != "production") {
     require('dotenv').config();
 };
 const express = require("express");
@@ -25,17 +25,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, "public")));
 
+const dbURL = process.env.ATLAS_DB;
+// const MONGO_URL = "mongodb://localhost:27017/wanderLust";
+
 const store = MongoStore.create({
-    mongoUrl : dbURL,
-    crypto : {
-         secret:process.env.SECRET
+    mongoUrl: dbURL,
+    crypto: {
+        secret: process.env.SECRET
     },
-    touchAfter : 24 * 3600
+    touchAfter: 24 * 3600
 });
 
-store.on("error", () => {
-    console.log("Error in Mongo Session Store",err);
+
+store.on("error", (err) => {
+    console.log("Error in Mongo Session Store", err);
 });
+
 
 const sessionOptions = {
     store,
@@ -63,7 +68,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const dbURL = process.env.ATLAS_DB;
+
 
 main().then(() => {
     console.log("Connection Successful");
@@ -100,5 +105,6 @@ app.use((req, res, next) => {
 // Error Handling Middleware
 app.use((err, req, res, next) => {
     const { status = 500, message = "Something Went Wrong!" } = err;
+    console.error(err); // Logs the full error
     res.status(status).render("error.ejs", { message });
 });

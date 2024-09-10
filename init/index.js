@@ -1,23 +1,40 @@
+require('dotenv').config({ path: '../.env' });
+
+console.log("ATLAS_DB:", process.env.ATLAS_DB);
 const mongoose = require("mongoose");
 const initData = require('./data.js');
-const Listing = require("../models/listing.js")
+const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderLust"
+const MONGO_URL = process.env.ATLAS_DB;
 
-main().then(() =>{
+console.log("MONGO_URL:", MONGO_URL); // Debugging line
+
+async function main() {
+    if (!MONGO_URL) {
+        console.error("MONGO_URL is not set. Check your .env file.");
+        return;
+    }
+
+    await mongoose.connect(MONGO_URL);
+}
+
+main().then(() => {
     console.log("Connection Successful");
-}).catch((err)=>{
+}).catch((err) => {
     console.log(err);
 });
 
-async function main() {
-    await mongoose.connect(MONGO_URL);
+const initDB = async () => {
+    try {
+        await Listing.deleteMany({});
+        initData.data = initData.data.map((obj) => ({ ...obj, owner: "66e04a69e1533c6335cbde19" }));
+        await Listing.insertMany(initData.data);
+        console.log("Data Initialized");
+    } catch (error) {
+        console.error("Error initializing database:", error);
+    } finally {
+        mongoose.connection.close(); // Close the connection
+    }
 };
 
-const initDB = async () =>{
-    await Listing.deleteMany({});
-    initData.data = initData.data.map((obj)=> ({...obj,owner:"66dee7d55cffd03fac108409"}));
-    await Listing.insertMany(initData.data);
-    console.log("Data Initialized");
-};
 initDB();

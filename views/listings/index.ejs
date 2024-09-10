@@ -1,11 +1,5 @@
 <% layout('../views/layouts/boilerplate.ejs') -%>
 <body>
-    <!-- Uncomment to enable the add listings form -->
-    <!--
-    <form method="GET" action="/listings/new">
-        <button>Add Listings</button>
-    </form>
-    -->
     <style>
         #filters{
             display: flex;
@@ -88,7 +82,6 @@
         </div>
     </div>
     <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
-        
         <% allListings.forEach(listing => { %>
             <a href="/listings/<%= listing._id %>" class="listings-links">
                 <div class="card col" style="width: 265px;">
