@@ -2,7 +2,6 @@ const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
 
 module.exports.createReview = async (req, res) => {
-    console.log(req.body); // Debugging: check request payload
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
 
@@ -11,7 +10,7 @@ module.exports.createReview = async (req, res) => {
 
     await newReview.save();
     await listing.save();
-    req.flash("success","Review Added Successfully!");
+    req.flash("success", "Review Added Successfully!");
     res.redirect(`/listings/${req.params.id}`);
 };
 
@@ -20,6 +19,6 @@ module.exports.destroyReview = async (req, res) => {
 
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
-    req.flash("success","Review Deleted Successfully!");
-    res.redirect(`/listings/${id}`); 
+    req.flash("success", "Review Deleted Successfully!");
+    res.redirect(`/listings/${id}`);
 };

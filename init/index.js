@@ -1,13 +1,10 @@
 require('dotenv').config({ path: '../.env' });
 
-console.log("ATLAS_DB:", process.env.ATLAS_DB);
 const mongoose = require("mongoose");
 const initData = require('./data.js');
 const Listing = require("../models/listing.js");
 
 const MONGO_URL = process.env.ATLAS_DB;
-
-console.log("MONGO_URL:", MONGO_URL); // Debugging line
 
 async function main() {
     if (!MONGO_URL) {
@@ -21,7 +18,7 @@ async function main() {
 main().then(() => {
     console.log("Connection Successful");
 }).catch((err) => {
-    console.log(err);
+    console.error(err);
 });
 
 const initDB = async () => {

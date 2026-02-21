@@ -17,10 +17,15 @@ const flash = require("connect-flash");
 const User = require("./models/user.js");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const helmet = require("helmet");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
+
+// Security: Helmet adds 11+ HTTP security headers in one line
+app.use(helmet());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, "public")));
@@ -44,19 +49,18 @@ store.on("error", (err) => {
 
 const sessionOptions = {
     store,
-    secret:process.env.SECRET,
-    resave:false,
-    saveUninitialized:true,
-    cookie:{
-        expires:Date.now() + 7 * 24 * 60 * 60 * 1000,
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
     }
 };
 
-app.get("/", (req, res) => {
-    res.redirect("/listings");
-});
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -80,9 +84,6 @@ async function main() {
     await mongoose.connect(dbURL);
 };
 
-app.listen(8080, () => {
-    console.log(`Server is listening on port 8080`);
-});
 
 // Middleware to handle flash messages
 app.use((req, res, next) => {
@@ -92,9 +93,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/listings",listingRouter);
-app.use("/listings/:id/reviews",reviewRouter);
-app.use("/",userRouter);
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 
 // 404 Error Handler
@@ -107,4 +112,8 @@ app.use((err, req, res, next) => {
     const { status = 500, message = "Something Went Wrong!" } = err;
     console.error(err); // Logs the full error
     res.status(status).render("error.ejs", { message });
+});
+
+app.listen(8080, () => {
+    console.log(`Server is listening on port 8080`);
 });
