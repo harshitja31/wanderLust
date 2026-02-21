@@ -23,8 +23,50 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 
-// Security: Helmet adds 11+ HTTP security headers in one line
-app.use(helmet());
+// Security: Helmet with customised Content-Security-Policy
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: [
+                    "'self'",
+                    "'unsafe-inline'",
+                    "https://cdnjs.cloudflare.com",
+                    "https://cdn.jsdelivr.net",
+                    "https://api.mapbox.com",
+                ],
+                styleSrc: [
+                    "'self'",
+                    "'unsafe-inline'",
+                    "https://cdnjs.cloudflare.com",
+                    "https://cdn.jsdelivr.net",
+                    "https://api.mapbox.com",
+                    "https://fonts.googleapis.com",
+                ],
+                imgSrc: [
+                    "'self'",
+                    "data:",
+                    "blob:",
+                    "https://images.unsplash.com",
+                    "https://plus.unsplash.com",
+                    "https://res.cloudinary.com",
+                ],
+                fontSrc: [
+                    "'self'",
+                    "https://cdnjs.cloudflare.com",
+                    "https://fonts.gstatic.com",
+                ],
+                connectSrc: [
+                    "'self'",
+                    "https://api.mapbox.com",
+                    "https://events.mapbox.com",
+                ],
+                workerSrc: ["'self'", "blob:"],
+            },
+        },
+    })
+);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
