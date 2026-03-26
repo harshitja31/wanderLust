@@ -1,0 +1,79 @@
+<!-- Title -->
+<div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" id="title" name="listing[title]" placeholder="Give your listing a catchy name"
+        value="<%= locals.listing ? listing.title : '' %>" class="form-control" required>
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please provide a valid title.</div>
+</div>
+
+<!-- Description -->
+<div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea id="description" name="listing[description]" placeholder="Describe your place — what makes it special?" class="form-control" rows="4"
+        required><%= locals.listing && listing.description ? listing.description : '' %></textarea>
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please provide a valid description.</div>
+</div>
+
+<!-- Original Image Preview (Only for Edit) -->
+<% if (locals.originalImgUrl) { %>
+    <div class="mb-3">
+        <label for="image_preview" class="form-label">Current Image</label>
+        <div>
+            <img src="<%= originalImgUrl %>" class="img-thumbnail original-preview-img" alt="Current listing image">
+        </div>
+    </div>
+    <% } %>
+
+<!-- Image Upload -->
+<div class="mb-3">
+    <label for="image" class="form-label">Upload Image</label>
+    <input type="file" id="image" name="listing[image]" class="form-control" <%=locals.listing &&
+        locals.listing._id ? '' : 'required' %>>
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please upload a valid image.</div>
+</div>
+
+<!-- Price and Country -->
+<div class="row g-3">
+    <div class="mb-3 col-12 col-md-4">
+        <label for="price" class="form-label">Price (₹ / night)</label>
+        <input id="price" type="number" name="listing[price]" placeholder="e.g. 2500"
+            value="<%= locals.listing ? listing.price : '' %>" class="form-control" required>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please provide a valid price.</div>
+    </div>
+    <div class="mb-3 col-12 col-md-8">
+        <label for="country" class="form-label">Country</label>
+        <input type="text" id="country" name="listing[country]" placeholder="e.g. India"
+            value="<%= locals.listing ? listing.country : '' %>" class="form-control" required>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please provide a valid country.</div>
+    </div>
+</div>
+
+<!-- Location -->
+<div class="mb-3">
+    <label for="location" class="form-label">Location</label>
+    <input type="text" id="location" name="listing[location]" placeholder="e.g. Manali, Himachal Pradesh"
+        value="<%= locals.listing ? listing.location : '' %>" class="form-control" required>
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please provide a valid location.</div>
+</div>
+
+<!-- Category -->
+<div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select name="listing[category]" id="category" class="form-select" required>
+        <option value="" disabled <%=!locals.listing || !listing.category ? 'selected' : '' %>>Select a category
+        </option>
+        <% const categories=["Rooms", "Amazing Pools" , "Farms" , "Beachfront" , "Islands" , "Top cities"
+            , "Arctic" , "Mountains" , "Camping" , "Lakefronts" ]; for(let cat of categories) { %>
+            <option value="<%= cat %>" <%=locals.listing && listing.category===cat ? 'selected' : '' %>><%= cat %>
+            </option>
+            <% } %>
+    </select>
+    <div class="valid-feedback">Looks good!</div>
+    <div class="invalid-feedback">Please select a category.</div>
+</div>

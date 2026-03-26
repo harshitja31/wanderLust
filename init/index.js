@@ -1,28 +1,14 @@
-require('dotenv').config({ path: '../.env' });
+require("dotenv").config({ path: "../.env" });
+require("../config/env.js");
 
 const mongoose = require("mongoose");
-const initData = require('./data.js');
+const initData = require("./data.js");
 const Listing = require("../models/listing.js");
-
-const MONGO_URL = process.env.ATLAS_DB;
-
-async function main() {
-    if (!MONGO_URL) {
-        console.error("MONGO_URL is not set. Check your .env file.");
-        return;
-    }
-
-    await mongoose.connect(MONGO_URL);
-}
-
-main().then(() => {
-    console.log("Connection Successful");
-}).catch((err) => {
-    console.error(err);
-});
+const connectDB = require("../config/db.js");
 
 const initDB = async () => {
     try {
+        await connectDB();
         await Listing.deleteMany({});
         initData.data = initData.data.map((obj) => ({ ...obj, owner: "66e04a69e1533c6335cbde19" }));
         await Listing.insertMany(initData.data);

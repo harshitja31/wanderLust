@@ -1,12 +1,14 @@
 <% if (successMsg && successMsg.length > 0) { %>
-  <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-    <%= successMsg %> <!-- Display the first success message if there are multiple -->
+  <div class="alert alert-success alert-dismissible fade show col-12 col-md-8 col-lg-6 mx-auto mt-3" role="alert" id="successAlert">
+    <i class="fa-solid fa-circle-check" style="margin-right:8px"></i>
+    <%= successMsg %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>
-<% if (errorMsg && errorMsg .length > 0) { %>
-  <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-    <%= errorMsg %> <!-- Display the first success message if there are multiple -->
+<% if (errorMsg && errorMsg.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show col-12 col-md-8 col-lg-6 mx-auto mt-3" role="alert" id="errorAlert">
+    <i class="fa-solid fa-circle-exclamation" style="margin-right:8px"></i>
+    <%= errorMsg %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>

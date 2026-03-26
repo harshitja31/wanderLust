@@ -1,8 +1,12 @@
 <% layout('../views/layouts/boilerplate.ejs') -%>
 
-<div class="row mt-4">
-    <div class="alert alert-danger col-4 offset-4" role="alert">
-        <i class="fa-solid fa-triangle-exclamation" style="color: #b50808;"></i>
-        <%= message %>
-      </div>
+<div class="auth-wrapper">
+    <div class="auth-card text-center" style="max-width:500px">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size:3rem;color:var(--color-danger);margin-bottom:var(--space-lg)"></i>
+        <h4 id="errorTitle">Something went wrong</h4>
+        <p style="color:var(--color-text-secondary);margin:var(--space-md) 0 var(--space-xl)"><%= message %></p>
+        <a href="/listings" class="btn btn-danger" id="goHomeBtn">
+            <i class="fa-solid fa-house"></i> Back to Home
+        </a>
+    </div>
 </div>

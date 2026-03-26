@@ -1,64 +1,51 @@
-<style>
-  .search-btn{
-    background-color: #fe424d;
-    color: white;
-    border-radius: 100%;
-  }
-  .search-btn:hover{
-    background-color: #fe424d;
-    color: white;
-    border-radius: 100%;
-  }
-  .search-inp{
-    border-radius: 25px;
-    padding: 0.5rem 1.5rem 0.5rem 1.5rem;
-  }
-  .dropdown-menu {
-    min-width: 150px; /* Ensure the menu has enough width */
-    min-height: 40px;
-    max-height: 90px;
-    max-width: 250px;
-    padding-left: 0.5rem;
-    text-align: left;
-  }
-</style>
-
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="/listings">Explore</a>
-        </div>
-        <div class="navbar-nav ms-auto">
-          <form class="d-flex" role="search">
-            <input class="form-control me-2 search-inp text-center" type="search" placeholder="Search Destinations" aria-label="Search">
-            <button class="btn btn-outline search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-          </form>
-        </div>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="/listings/new">Airbnb your home</a>
-          <div >
-          <li class="nav-item dropdown">
+<nav class="navbar navbar-expand-md" id="mainNav">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-regular fa-compass"></i>
+      <span class="d-none d-sm-inline">WanderLust</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" role="search" id="navSearchForm">
+          <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations..." aria-label="Search">
+          <button class="btn search-btn" type="submit" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">
+          <i class="fa-solid fa-plus d-md-none"></i>
+          Airbnb your home
+        </a>
+        <div>
+          <li class="nav-item dropdown" id="userDropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-user"></i>
+              <i class="fa-solid fa-bars d-md-inline d-none" style="margin-right:6px;font-size:0.75rem"></i>
+              <i class="fa-solid fa-circle-user" style="font-size:1.3rem"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <% if(!currUser) { %>
-              <li><a class="nav-link" href="/signup"><b>SignUp</b></a></li>
-              <li><a class="nav-link" href="/login"><b>Login</b></a></li>
-              <% } %>
-              <% if(currUser) { %>
-              <li>Username: <%= currUser.username  %></li>
-              <li><a class="nav-link" href="/logout"><b>Logout</b></a></li>
-              <% } %>
+                <li><a class="nav-link" href="/signup"><b>Sign Up</b></a></li>
+                <li><a class="nav-link" href="/login"><b>Log In</b></a></li>
+                <% } %>
+                  <% if(currUser) { %>
+                    <li class="px-3 py-2" style="font-size:0.85rem;color:var(--color-text-secondary)">
+                      <i class="fa-solid fa-user" style="margin-right:4px"></i> <%= currUser.username %>
+                    </li>
+                    <li><hr class="dropdown-divider" style="margin:4px 0"></li>
+                    <li><a class="nav-link" href="/logout"><b>Log Out</b></a></li>
+                    <% } %>
             </ul>
           </li>
         </div>
-          </div>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
